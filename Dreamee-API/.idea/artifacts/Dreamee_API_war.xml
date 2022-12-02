@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Dreamee-API:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>Dreamee-API</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="Dreamee-API-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="Dreamee-API:war exploded" />
+    </root>
+  </artifact>
+</component>
