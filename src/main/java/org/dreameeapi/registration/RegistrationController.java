@@ -24,10 +24,14 @@ public class RegistrationController {
 
     @PostMapping
     public String register(@RequestBody RegistrationRequest request, HttpServletRequest servletRequest) throws Exception {
-        // save data to db okay,but enable = false
-        User user = userService.register(request);
-        // email send , wait user check email
-        publisher.publishEvent(new RegistrationCompleteEvent(user, applicationURL(servletRequest)));
+        try {
+            // save data to db okay,but enable = false
+            User user = userService.register(request);
+            // email send , wait user check email
+            publisher.publishEvent(new RegistrationCompleteEvent(user, applicationURL(servletRequest)));
+        } catch (Exception e) {
+            return e.getMessage();
+        }
         return "Successfully! Please Check You Email To Verify Account";
     }
 
