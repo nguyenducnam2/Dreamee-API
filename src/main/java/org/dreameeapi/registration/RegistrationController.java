@@ -48,6 +48,6 @@ public class RegistrationController {
     }
 
     public String applicationURL(HttpServletRequest servletRequest) {
-        return "https://" + servletRequest.getServerName() + ":" + servletRequest.getServerPort() + "/api/registration";
+        return "https://" + servletRequest.getServerName() + "/api/registration";
     }
 }
