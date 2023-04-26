@@ -20,7 +20,8 @@ public class RegistrationSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.cors().and().csrf().disable().authorizeHttpRequests()
                 .requestMatchers("/api/registration").permitAll().and().authorizeHttpRequests()
-                .requestMatchers("/api/user").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers("/api/user/**").hasAnyAuthority("USER", "ADMIN")
+                .and().authorizeHttpRequests().requestMatchers("/api/registration/**").permitAll()
                 .and().formLogin().and().build();
     }
 }

@@ -1,24 +1,29 @@
 package org.dreameeapi.registration.event.listener;
 
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dreameeapi.entity.User;
 import org.dreameeapi.registration.event.RegistrationCompleteEvent;
+import org.dreameeapi.service.EmailService;
 import org.dreameeapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class RegistrationCompleteEventListener
         implements ApplicationListener<RegistrationCompleteEvent> {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public void onApplicationEvent(RegistrationCompleteEvent event) {
@@ -31,6 +36,8 @@ public class RegistrationCompleteEventListener
         // build verification url
         String url = event.getApplicationURL() + "/verify?token=" + verificationToken;
         // send the email
-        log.info("Click the link to verify email ! Thanks you\n" + url);
+        log.info("Click the link to verify email ! Thanks you\n" + emailService.sendEmail(user.getEmail(), "Verify Email", url));
     }
+
+
 }

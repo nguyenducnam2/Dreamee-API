@@ -1,5 +1,6 @@
 package org.dreameeapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class User {
     int id;
     String firstName;
     String lastName;
+    @JsonIgnore
     String password;
     @NaturalId(mutable = true)
     String email;

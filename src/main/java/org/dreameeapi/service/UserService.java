@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,9 @@ public class UserService implements org.dreameeapi.service.Service<User> {
     public User register(RegistrationRequest request) throws Exception {
         Optional<User> user = userRepository.findByEmail(request.email());
         if (user.isPresent()) {
-            throw new Exception("This email exists: " + request.email());
+            if (user.get().isEnabled())
+                throw new Exception("This email exists: " + request.email());
+            return user.get();
         }
         User newUser = new User();
         newUser.setFirstName(request.firstName());
@@ -41,6 +44,21 @@ public class UserService implements org.dreameeapi.service.Service<User> {
     public void saveToken(User user, String token) {
         VerificationToken verificationToken = new VerificationToken(token, user);
         verificationTokenRepository.save(verificationToken);
+    }
+
+    public String validateToken(VerificationToken token) {
+        if (token == null) {
+            return "Eroor null token";
+        }
+        Calendar calendar = Calendar.getInstance();
+        if ((token.getExpiration().getTime() - calendar.getTime().getTime()) <= 0) {
+            verificationTokenRepository.delete(token);
+            return "Token expired";
+        }
+        verificationTokenRepository.delete(token);
+        token.getUser().setEnabled(true);
+        userRepository.save(token.getUser());
+        return "Sucess verify account!You can login";
     }
 
     @Override
