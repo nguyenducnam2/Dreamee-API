@@ -14,7 +14,7 @@ public class RegistrationDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userService.findByEmail(email).map(RegistrationDetails::new)
+        return userService.findByEmail(email).map(user -> new RegistrationDetails(user))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
