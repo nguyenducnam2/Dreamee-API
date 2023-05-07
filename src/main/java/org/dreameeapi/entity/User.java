@@ -1,6 +1,7 @@
 package org.dreameeapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,7 +34,8 @@ public class User {
     @Basic
     @Column(name = "locked", nullable = true)
     private Boolean locked;
-//    @OneToMany(mappedBy = "userByUserId")
-//    private Collection<Role> roles;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Collection<Role> roles;
 
 }

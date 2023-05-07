@@ -36,4 +36,8 @@ public class UserService implements Service<User> {
     public boolean exists(User user) {
         return userRepository.existsById(user.getId());
     }
+
+    public List<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 }

@@ -2,8 +2,6 @@ package org.dreameeapi.model;
 
 import org.dreameeapi.entity.Role;
 import org.dreameeapi.entity.User;
-import org.dreameeapi.service.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,14 +10,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class UserDetailModel implements UserDetails {
+public class UserDetailsModel implements UserDetails {
     private String username;
     private String password;
     private boolean enabled;
     private boolean locked;
     private List<GrantedAuthority> authorities = new ArrayList<>();
 
-    public UserDetailModel(User user, List<Role> roles) {
+    public UserDetailsModel(User user, List<Role> roles) {
         username = user.getUsername();
         password = user.getPassword();
         enabled = user.getEnabled();
