@@ -1,7 +1,6 @@
-package org.dreameeapi.config;
+package org.dreameeapi.config.security;
 
-import org.dreameeapi.service.RoleService;
-import org.dreameeapi.service.UserService;
+import org.dreameeapi.config.security.filter.UsernamePasswordProcessLoginFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,10 +9,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Autowired
+    private UsernamePasswordProcessLoginFilter usernamePasswordProcessLoginFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -22,14 +25,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.addFilterAt(usernamePasswordProcessLoginFilter, UsernamePasswordAuthenticationFilter.class);
         http
                 .cors().disable()
-                .authorizeHttpRequests().requestMatchers("/api/v1/user")
-                .hasAnyAuthority("ADMIN", "MOD")
+                .csrf().disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/api/v1/**").hasAnyAuthority("MOD", "DEV", "ADMIN")
                 .and()
                 .httpBasic()
                 .and()
-                .logout().permitAll()
+                .formLogin().loginPage("/login")
                 .and()
                 .authorizeHttpRequests().anyRequest().permitAll();
         return http.build();

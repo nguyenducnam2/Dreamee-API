@@ -2,6 +2,7 @@ package org.dreameeapi.service;
 
 import org.dreameeapi.entity.User;
 import org.dreameeapi.model.UserDetailsModel;
+import org.dreameeapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component("userDetailsService")
+@Component
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserService userService;
