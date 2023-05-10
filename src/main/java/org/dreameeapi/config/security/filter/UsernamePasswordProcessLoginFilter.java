@@ -28,9 +28,9 @@ public class UsernamePasswordProcessLoginFilter implements Filter {
         if (username != null && password != null) {
             User user = userService.findByUsername(username).get(0);
             Cookie cookie = new Cookie("uId", user.getId() + "");
+            cookie.setMaxAge(100000);
             response.addCookie(cookie);
             user.setPassword(password);
-            request.getSession().setAttribute("user", user);
         }
         chain.doFilter(req, res);
     }
