@@ -5,26 +5,27 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ToString
 @Entity
 @Table(name = "role")
 public class Role {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    int id;
     @Basic
-    @Column(name = "role", nullable = true, length = 45)
-    private String role;
+    @Column(name = "name")
+    String name;
+
     @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @ManyToMany(mappedBy = "roles")
+    List<User> users = new ArrayList<>();
 }

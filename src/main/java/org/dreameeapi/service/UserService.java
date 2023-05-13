@@ -1,16 +1,18 @@
 package org.dreameeapi.service;
 
+import lombok.RequiredArgsConstructor;
 import org.dreameeapi.entity.User;
-import org.dreameeapi.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.dreameeapi.reposiroty.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@org.springframework.stereotype.Service
-public class UserService implements Service<User> {
-    @Autowired
-    private UserRepository userRepository;
+@Service
+@RequiredArgsConstructor
+public class UserService implements SimpleMethodService<User> {
+
+    private final UserRepository userRepository;
 
     @Override
     public List<User> findAll() {
@@ -37,7 +39,7 @@ public class UserService implements Service<User> {
         return userRepository.existsById(user.getId());
     }
 
-    public List<User> findByUsername(String username) {
+    public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 }

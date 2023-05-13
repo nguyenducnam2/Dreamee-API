@@ -1,30 +1,31 @@
 package org.dreameeapi.model;
 
-import org.dreameeapi.entity.Role;
+import lombok.NoArgsConstructor;
 import org.dreameeapi.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@NoArgsConstructor
 public class UserDetailsModel implements UserDetails {
     private String username;
     private String password;
     private boolean enabled;
     private boolean locked;
-    private List<GrantedAuthority> authorities = new ArrayList<>();
+    private List<GrantedAuthority> authorities;
 
-    public UserDetailsModel(User user, List<Role> roles) {
+    public UserDetailsModel(User user) {
         username = user.getUsername();
         password = user.getPassword();
         enabled = user.getEnabled();
         locked = user.getLocked();
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRole()));
-        }
+        authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -44,7 +45,7 @@ public class UserDetailsModel implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return enabled;
     }
 
     @Override

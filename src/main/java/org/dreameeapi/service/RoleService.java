@@ -1,17 +1,18 @@
 package org.dreameeapi.service;
 
+import lombok.RequiredArgsConstructor;
 import org.dreameeapi.entity.Role;
-import org.dreameeapi.entity.User;
-import org.dreameeapi.repository.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.dreameeapi.reposiroty.RoleRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@org.springframework.stereotype.Service
-public class RoleService implements Service<Role> {
-    @Autowired
-    private RoleRepository roleRepository;
+@Service
+@RequiredArgsConstructor
+public class RoleService implements SimpleMethodService<Role> {
+
+    private final RoleRepository roleRepository;
 
     @Override
     public List<Role> findAll() {
@@ -36,9 +37,5 @@ public class RoleService implements Service<Role> {
     @Override
     public boolean exists(Role role) {
         return roleRepository.existsById(role.getId());
-    }
-
-    public List<Role> findByUser(User user) {
-        return roleRepository.findByUser(user);
     }
 }

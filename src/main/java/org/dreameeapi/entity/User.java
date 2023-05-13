@@ -6,36 +6,41 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import org.hibernate.annotations.GenericGenerator;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ToString
 @Entity
 @Table(name = "user")
 public class User {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    int id;
     @Basic
-    @Column(name = "username", nullable = false, length = 20)
-    private String username;
-    @Basic
-    @Column(name = "password", nullable = true, length = 100)
+    @Column(name = "username")
+    String username;
     @JsonIgnore
-    private String password;
     @Basic
-    @Column(name = "enabled", nullable = true)
-    private Boolean enabled;
+    @Column(name = "password")
+    String password;
     @Basic
-    @Column(name = "locked", nullable = true)
-    private Boolean locked;
-    @JsonManagedReference
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Collection<Role> roles;
+    @Column(name = "enabled")
+    Boolean enabled;
+    @Basic
+    @Column(name = "locked")
+    Boolean locked;
+    @Basic
+    @Column(name = "avatar")
+    String avatar;
 
+    @JsonManagedReference
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    List<Role> roles = new ArrayList<>();
 }
