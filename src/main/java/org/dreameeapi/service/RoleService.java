@@ -35,6 +35,11 @@ public class RoleService implements SimpleMethodService<Role> {
     }
 
     @Override
+    public void removeById(int id) {
+
+    }
+
+    @Override
     public boolean exists(Role role) {
         return roleRepository.existsById(role.getId());
     }

@@ -2,6 +2,7 @@ package org.dreameeapi.model;
 
 import lombok.NoArgsConstructor;
 import org.dreameeapi.entity.User;
+import org.dreameeapi.service.JwtService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,7 @@ public class UserDetailsModel implements UserDetails {
     private boolean enabled;
     private boolean locked;
     private List<GrantedAuthority> authorities;
+    private long expired;
 
     public UserDetailsModel(User user) {
         username = user.getUsername();
@@ -26,6 +28,17 @@ public class UserDetailsModel implements UserDetails {
         authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
+        setExpired(authorities);
+    }
+
+    private void setExpired(List<GrantedAuthority> authorities) {
+        GrantedAuthority role = authorities.get(0);
+        switch (role.getAuthority()) {
+            case "ADMIN" -> expired = JwtService.EXPIRE_10_YEAR;
+            case "MOD" -> expired = JwtService.EXPIRE_1_YEAR;
+            case "DEV" -> expired = JwtService.EXPIRE_10_HOUR;
+            default -> expired = JwtService.EXPIRE_1_HOUR;
+        }
     }
 
     @Override
@@ -61,5 +74,9 @@ public class UserDetailsModel implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public long getExpired() {
+        return expired;
     }
 }

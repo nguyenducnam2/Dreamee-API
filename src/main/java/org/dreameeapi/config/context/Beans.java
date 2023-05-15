@@ -1,7 +1,7 @@
 package org.dreameeapi.config.context;
 
 import lombok.RequiredArgsConstructor;
-import org.dreameeapi.config.security.provider.JwtAuthenticationProvider;
+import org.dreameeapi.provider.JwtAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

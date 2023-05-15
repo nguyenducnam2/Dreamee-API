@@ -11,6 +11,7 @@ public interface SimpleMethodService<T> {
     T save(T t);
 
     void remove(T t);
+    void removeById(int id);
 
     boolean exists(T t);
 }

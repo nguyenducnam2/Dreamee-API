@@ -1,8 +1,10 @@
-package org.dreameeapi.config.security.provider;
+package org.dreameeapi.provider;
 
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,18 +19,13 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     }
 
     @Override
-    public Authentication authenticate(Authentication authentication) {
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
-        try {
-            UserDetails userDetails = retrieveUser(username);
-            if (!encoder.matches(authentication.getCredentials().toString(), userDetails.getPassword())) {
-                throw new Exception("Invalid Password");
-            }
-            return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
-        } catch (Exception e) {
-            e.printStackTrace();
+        UserDetails userDetails = retrieveUser(username);
+        if (!encoder.matches(authentication.getCredentials().toString(), userDetails.getPassword())) {
+            throw new DisabledException("Username or Password invalid");
         }
-        return null;
+        return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
     }
 
     @Override

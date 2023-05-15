@@ -35,6 +35,11 @@ public class UserService implements SimpleMethodService<User> {
     }
 
     @Override
+    public void removeById(int id) {
+
+    }
+
+    @Override
     public boolean exists(User user) {
         return userRepository.existsById(user.getId());
     }
