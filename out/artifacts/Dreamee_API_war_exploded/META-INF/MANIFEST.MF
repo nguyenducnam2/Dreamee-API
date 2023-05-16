@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: namng
+Build-Jdk: Oracle OpenJDK version 17.0.7
+Implementation-Title: Dreamee-API
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: org
+Main-Class: ${start-class}
+
