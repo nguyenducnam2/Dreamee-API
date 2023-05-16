@@ -31,12 +31,10 @@ public class Song {
     @JsonIgnoreProperties("songs")
     @ManyToMany(mappedBy = "songs", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     List<Genre> genres;
-    @Transient
     @JsonIgnore
     @JsonIgnoreProperties("songs")
     @ManyToMany(mappedBy = "songs", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     List<Album> albums;
-    @Transient
     @JsonIgnore
     @JsonIgnoreProperties("songs")
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
