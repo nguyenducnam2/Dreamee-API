@@ -1,5 +1,6 @@
 package org.dreameeapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class Band {
     @Basic
     @Column(name = "image")
     String pic;
+    @JsonIgnoreProperties("bands")
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "band_artist",
@@ -32,8 +34,10 @@ public class Band {
             inverseJoinColumns = @JoinColumn(name = "artist_id")
     )
     List<Artist> artists;
+    @JsonIgnoreProperties("band")
     @OneToMany(mappedBy = "band", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Album> albums;
+    @JsonIgnoreProperties("band")
     @OneToMany(mappedBy = "band", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Song> songs;
 

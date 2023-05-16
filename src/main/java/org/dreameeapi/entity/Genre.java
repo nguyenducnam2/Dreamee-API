@@ -26,7 +26,7 @@ public class Genre {
     @Column(name = "name", nullable = false, unique = true)
     String name;
     @JsonIgnoreProperties("genre")
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "genre_song",
             joinColumns = @JoinColumn(name = "genre_id"),

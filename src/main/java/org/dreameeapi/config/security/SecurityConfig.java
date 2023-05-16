@@ -27,7 +27,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors().and()
+                .cors()
+                .and()
                 .csrf().disable()
                 .authorizeHttpRequests().requestMatchers("/api/v1/auth/token").permitAll()
                 .requestMatchers("/api/v1/user/**").hasAnyAuthority("ADMIN")

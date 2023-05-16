@@ -1,5 +1,6 @@
 package org.dreameeapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,8 +24,10 @@ public class Artist {
     @Basic
     @Column(name = "pic")
     String pic;
+    @JsonIgnoreProperties("artists")
     @ManyToMany(mappedBy = "artists", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Band> band;
+    @JsonIgnoreProperties("artist")
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Album> albums;
 }

@@ -1,7 +1,7 @@
 package org.dreameeapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.dreameeapi.dto.GenreDto;
+import org.dreameeapi.entity.Genre;
 import org.dreameeapi.response.GenreResponse;
 import org.dreameeapi.response.MessResponse;
 import org.dreameeapi.service.GenreService;
@@ -19,10 +19,10 @@ public class GenreController {
         return new GenreResponse(genreService.findAll());
     }
 
-    @PostMapping("/save")
-    public MessResponse save(@RequestBody GenreDto genre) {
+    @PostMapping
+    public MessResponse save(@RequestBody Genre genre) {
         try {
-            genreService.save(genre.get());
+            genreService.save(genre);
             return new MessResponse(true, "Successfully");
         } catch (Exception e) {
             return new MessResponse(false, e.getMessage());
